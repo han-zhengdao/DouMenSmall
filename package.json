@@ -41,7 +41,8 @@
     "build:quickapp-webview-union": "uni build -p quickapp-webview-union",
     "prepare": "husky",
     "cz": "git-cz",
-    "preinstall": "npx only-allow pnpm"
+    "preinstall": "npx only-allow pnpm",
+    "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx,vue,scss,css,json}\""
   },
   "dependencies": {
     "@dcloudio/uni-app": "3.0.0-3090920231225001",
@@ -66,6 +67,7 @@
     "pinia-plugin-persistedstate": "^3.2.1",
     "uni-preset-vue": "link:",
     "vue": "3.2.47",
+    "vue-cesium": "3.1.8",
     "vue-i18n": "^9.1.9"
   },
   "devDependencies": {

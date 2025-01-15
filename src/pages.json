@@ -9,22 +9,49 @@
   "pages": [
     {
       "path": "pages/index/index",
-      "type": "home",
-      "layout": "default",
       "style": {
-        "navigationBarTitleText": "uni-app"
+        "navigationStyle": "custom",
+        "navigationBarTitleText": "",
+        "app-plus": {
+          "titleNView": false
+        },
+        "h5": {
+          "titleNView": false
+        },
+        "tabBar": {
+          "visible": false
+        }
       }
     },
     {
-      "path": "pages/interaction/interaction",
-      "type": "page",
-      "layout": "default",
+      "path": "pages/my/index",
       "style": {
-        "navigationBarTitleText": "互动"
+        "navigationBarTitleText": "我的"
+      }
+    },
+    {
+      "path": "pages/my/setting",
+      "style": {
+        "navigationBarTitleText": "设置"
+      }
+    },
+    {
+      "path": "pages/my/about",
+      "style": {
+        "navigationBarTitleText": "关于"
       }
     }
   ],
   "tabBar": {
+    "condition": {
+      "current": 0,
+      "list": [
+        {
+          "pagePath": "pages/my/index",
+          "visible": true
+        }
+      ]
+    },
     "color": "#bfbfbf",
     "selectedColor": "#1296db",
     "borderStyle": "black",
@@ -32,23 +59,22 @@
     "list": [
       {
         "pagePath": "pages/index/index",
-        "iconPath": "static/images/index_i_no.png",
-        "selectedIconPath": "static/images/index_i_yes.png",
-        "text": "首页"
+        "iconPath": "static/images/map_i_no.png",
+        "selectedIconPath": "static/images/map_i_yes.png",
+        "text": "地图"
       },
       {
-        "pagePath": "pages/interaction/interaction",
-        "iconPath": "static/images/interaction_i_no.png",
-        "selectedIconPath": "static/images/interaction_i_yes.png",
-        "text": "互动"
+        "pagePath": "pages/my/index",
+        "iconPath": "static/images/my_i_no.png",
+        "selectedIconPath": "static/images/my_i_yes.png",
+        "text": "我的"
       }
     ]
   },
   "globalStyle": {
-    "navigationBarTextStyle": "black",
-    "navigationBarTitleText": "uni-app",
-    "navigationBarBackgroundColor": "#F8F8F8",
-    "backgroundColor": "#F8F8F8"
+    "navigationStyle": "custom",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#000000"
   },
   "subPackages": []
 }

@@ -1,0 +1,12 @@
+# 构建产物
+dist
+unpackage
+
+# 依赖目录
+node_modules
+
+# 其他不需要格式化的文件
+.DS_Store
+.env
+.env.*
+*.log 

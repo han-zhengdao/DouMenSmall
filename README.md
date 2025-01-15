@@ -34,10 +34,16 @@ git clone https://github.com/gitboyzcf/uni-preset-vue3-vite.git
 pnpm install
 ```
 
-🐥 运行
+🐥 运行微信小程序
 
 ```bash
 pnpm dev:mp-weixin
+```
+
+🐥 运行h5
+
+```bash
+pnpm dev:h5
 ```
 
 🍁 打包
@@ -77,5 +83,11 @@ pnpm run cz
 ```
 
 ## Star History
+
+## 🌯 Git 拉取代码
+```bash
+git pull
+```
+
 
 [![Star History Chart](https://api.star-history.com/svg?repos=gitboyzcf/uni-preset-vue3-vite&type=Timeline)](https://star-history.com/#gitboyzcf/uni-preset-vue3-vite&Timeline)

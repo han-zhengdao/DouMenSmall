@@ -4,10 +4,14 @@
       console.log('App Launch')
     },
     onShow: function () {
-      console.log('App Show')
+      if (process.env.NODE_ENV === 'development') {
+        console.log('App Show')
+      }
     },
     onHide: function () {
-      console.log('App Hide')
+      if (process.env.NODE_ENV === 'development') {
+        console.log('App Hide')
+      }
     }
   }
 </script>
