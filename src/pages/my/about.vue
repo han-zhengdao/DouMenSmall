@@ -1,23 +1,18 @@
 <template>
   <view class="about-container">
-    <view class="logo">
-      <image src="/static/images/logo.png" mode="aspectFit" />
-    </view>
-    <view class="version">
-      <text>版本号：1.0.0</text>
-    </view>
-    <view class="info-list">
-      <view class="info-item">
-        <text class="label">官方网站</text>
-        <text class="value">www.example.com</text>
-      </view>
-      <view class="info-item">
-        <text class="label">联系我们</text>
-        <text class="value">contact@example.com</text>
-      </view>
+    <page-header title="关于我们"></page-header>
+    <view class="content" :style="{ paddingTop: `calc(88rpx + ${statusBarHeight}px)` }">
+      <!-- 关于页内容 -->
     </view>
   </view>
 </template>
+
+<script setup>
+import { ref } from 'vue'
+import PageHeader from '@/components/page-header/index.vue'
+
+const statusBarHeight = uni.getSystemInfoSync().statusBarHeight
+</script>
 
 <style lang="scss">
   .about-container {

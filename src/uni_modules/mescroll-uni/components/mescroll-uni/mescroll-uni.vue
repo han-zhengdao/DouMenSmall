@@ -59,21 +59,21 @@
 		<!-- #endif -->
 	</view>
 </template>
-
-<!-- 微信小程序, QQ小程序, app, h5使用wxs -->
+// <!-- 微信小程序, QQ小程序, app, h5使用wxs -->
 <!-- #ifdef MP-WEIXIN || MP-QQ || APP-PLUS || H5 -->
 <script src="./wxs/wxs.wxs" module="wxsBiz" lang="wxs"></script>
 <!-- #endif -->
 
 <!-- app, h5使用renderjs -->
 <!-- #ifdef APP-PLUS || H5 -->
+
 <script module="renderBiz" lang="renderjs">
 	import renderBiz from './wxs/renderjs.js';
 	export default {
 		mixins:[renderBiz]
 	}
 </script>
-<!-- #endif -->
+// <!-- #endif -->
 
 <script>
 	// 引入mescroll-uni.js,处理核心逻辑
@@ -87,27 +87,27 @@
 	// 引入兼容wxs(含renderjs)写法的mixins
 	import WxsMixin from './wxs/mixins.js';
 	
-	/**
-	 * mescroll-uni 嵌在页面某个区域的下拉刷新和上拉加载组件, 如嵌在弹窗,浮层,swiper中...
-	 * @property {Object} down 下拉刷新的参数配置
-	 * @property {Object} up 上拉加载的参数配置
-	 * @property {Object} i18n 国际化的参数配置
-	 * @property {String, Number} top 下拉布局往下的偏移量 (支持20, "20rpx", "20px", "20%"格式的值, 其中纯数字则默认单位rpx, 百分比则相对于windowHeight)
-	 * @property {Boolean, String} topbar 偏移量top是否加上状态栏高度, 默认false (使用场景:取消原生导航栏时,配置此项可留出状态栏的占位, 支持传入字符串背景,如色值,背景图,渐变)
-	 * @property {String, Number} bottom 上拉布局往上的偏移量 (支持20, "20rpx", "20px", "20%"格式的值, 其中纯数字则默认单位rpx, 百分比则相对于windowHeight)
-	 * @property {Boolean} safearea 偏移量bottom是否加上底部安全区的距离, 默认false (需要适配iPhoneX时使用)
-	 * @property {Boolean} fixed 是否通过fixed固定mescroll的高度, 默认true
-	 * @property {String, Number} height 指定mescroll的高度, 此项有值,则不使用fixed. (支持20, "20rpx", "20px", "20%"格式的值, 其中纯数字则默认单位rpx, 百分比则相对于windowHeight)
-	 * @property {Boolean} bottombar 底部是否偏移TabBar的高度 (仅在H5端的tab页生效)
-	 * @property {Boolean} disableScroll 是否禁止滚动, 默认false
-	 * @event {Function} init 初始化完成的回调 
-	 * @event {Function} down 下拉刷新的回调
-	 * @event {Function} up 上拉加载的回调 
-	 * @event {Function} emptyclick 点击empty配置的btnText按钮回调
-	 * @event {Function} topclick 点击回到顶部的按钮回调
-	 * @event {Function} scroll 滚动监听 (需在 up 配置 onScroll:true 才生效)
-	 * @example <mescroll-uni @init="mescrollInit" @down="downCallback" @up="upCallback"> ... </mescroll-uni>
-	 */
+	// /**
+	//  * mescroll-uni 嵌在页面某个区域的下拉刷新和上拉加载组件, 如嵌在弹窗,浮层,swiper中...
+	//  * @property {Object} down 下拉刷新的参数配置
+	//  * @property {Object} up 上拉加载的参数配置
+	//  * @property {Object} i18n 国际化的参数配置
+	//  * @property {String, Number} top 下拉布局往下的偏移量 (支持20, "20rpx", "20px", "20%"格式的值, 其中纯数字则默认单位rpx, 百分比则相对于windowHeight)
+	//  * @property {Boolean, String} topbar 偏移量top是否加上状态栏高度, 默认false (使用场景:取消原生导航栏时,配置此项可留出状态栏的占位, 支持传入字符串背景,如色值,背景图,渐变)
+	//  * @property {String, Number} bottom 上拉布局往上的偏移量 (支持20, "20rpx", "20px", "20%"格式的值, 其中纯数字则默认单位rpx, 百分比则相对于windowHeight)
+	//  * @property {Boolean} safearea 偏移量bottom是否加上底部安全区的距离, 默认false (需要适配iPhoneX时使用)
+	//  * @property {Boolean} fixed 是否通过fixed固定mescroll的高度, 默认true
+	//  * @property {String, Number} height 指定mescroll的高度, 此项有值,则不使用fixed. (支持20, "20rpx", "20px", "20%"格式的值, 其中纯数字则默认单位rpx, 百分比则相对于windowHeight)
+	//  * @property {Boolean} bottombar 底部是否偏移TabBar的高度 (仅在H5端的tab页生效)
+	//  * @property {Boolean} disableScroll 是否禁止滚动, 默认false
+	//  * @event {Function} init 初始化完成的回调 
+	//  * @event {Function} down 下拉刷新的回调
+	//  * @event {Function} up 上拉加载的回调 
+	//  * @event {Function} emptyclick 点击empty配置的btnText按钮回调
+	//  * @event {Function} topclick 点击回到顶部的按钮回调
+	//  * @event {Function} scroll 滚动监听 (需在 up 配置 onScroll:true 才生效)
+	//  * @example <mescroll-uni @init="mescrollInit" @down="downCallback" @up="upCallback"> ... </mescroll-uni>
+	//  */
 	export default {
 		name: 'mescroll-uni',
 		mixins: [WxsMixin],
