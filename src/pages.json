@@ -63,6 +63,13 @@
       "style": {
         "navigationBarTitleText": "商城"
       }
+    },
+    {
+      "path": "pages/login/index",
+      "style": {
+        "navigationBarTitleText": "登录",
+        "navigationStyle": "custom"
+      }
     }
   ],
   "tabBar": {

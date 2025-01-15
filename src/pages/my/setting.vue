@@ -15,18 +15,6 @@
           </view>
         </view>
 
-        <!-- 检查更新 -->
-        <view class="setting-item" @click="handleCheckUpdate">
-          <view class="item-left">
-            <uni-icons type="refresh" size="20" color="#666"></uni-icons>
-            <text class="item-text">检查更新</text>
-          </view>
-          <view class="item-right">
-            <text class="version">v{{ version }}</text>
-            <uni-icons type="right" size="16" color="#999"></uni-icons>
-          </view>
-        </view>
-
         <!-- 退出登录 -->
         <view class="setting-item" v-if="isLogin" @click="handleLogout">
           <view class="item-left">
@@ -51,7 +39,6 @@ const userStore = useUserStore()
 const statusBarHeight = uni.getSystemInfoSync().statusBarHeight
 const isLogin = computed(() => userStore.isLogin)
 
-const version = ref('1.0.0')
 const cacheSize = ref('0.00MB')
 
 // 获取缓存大小
@@ -96,18 +83,6 @@ const handleClearCache = () => {
       }
     }
   })
-}
-
-// 检查更新
-const handleCheckUpdate = () => {
-  uni.showLoading({ title: '检查更新中...' })
-  setTimeout(() => {
-    uni.hideLoading()
-    uni.showToast({
-      title: '已是最新版本',
-      icon: 'none'
-    })
-  }, 1500)
 }
 
 // 退出登录
@@ -173,8 +148,7 @@ onMounted(() => {
         align-items: center;
         gap: 8rpx;
 
-        .cache-size,
-        .version {
+        .cache-size {
           font-size: 26rpx;
           color: #999;
         }
