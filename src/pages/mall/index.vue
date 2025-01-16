@@ -20,7 +20,7 @@
         >
           <uni-icons 
             :type="category.icon" 
-            size="32" 
+            size="28"
             :color="currentCategory === index ? '#1296db' : '#666'"
           ></uni-icons>
           <text class="category-name" :class="{ 'active-text': currentCategory === index }">
@@ -86,37 +86,37 @@
     { 
       id: '0', 
       name: '精选', 
-      icon: 'fire-filled' 
+      icon: 'star'
     },
     { 
       id: '1', 
       name: '开运饰品',
-      icon: 'star'
+      icon: 'gift'
     },
     { 
       id: '2', 
       name: '风水摆件',
-      icon: 'home-filled'
+      icon: 'medal'
     },
     { 
       id: '3', 
       name: '香薰用品',
-      icon: 'notification-filled'
+      icon: 'shop'
     },
     { 
       id: '4', 
       name: '玄学书籍',
-      icon: 'calendar-filled'
+      icon: 'calendar'
     },
     { 
       id: '5', 
       name: '开运字画',
-      icon: 'medal'
+      icon: 'map'
     },
     { 
       id: '6', 
       name: '风水用品',
-      icon: 'heart-filled'
+      icon: 'heart'
     },
     { 
       id: '7', 
@@ -145,6 +145,54 @@
         image: '/static/images/gourd-1.png'
       }
     ],
+    1: [
+      {
+        id: 3,
+        name: '925纯银转运珠手链',
+        price: '168.00',
+        sales: 2300,
+        image: '/static/images/bracelet-1.png'
+      },
+      {
+        id: 4,
+        name: '天然翡翠平安扣项链',
+        price: '1288.00',
+        sales: 460,
+        image: '/static/images/jade-1.png'
+      }
+    ],
+    2: [
+      {
+        id: 5,
+        name: '纯铜五帝钱摆件',
+        price: '198.00',
+        sales: 1800,
+        image: '/static/images/coins-1.png'
+      },
+      {
+        id: 6,
+        name: '开光貔貅招财摆件',
+        price: '366.00',
+        sales: 920,
+        image: '/static/images/pixiu-1.png'
+      }
+    ],
+    3: [
+      {
+        id: 7,
+        name: '檀香木安神香薰',
+        price: '88.00',
+        sales: 3500,
+        image: '/static/images/incense-1.png'
+      },
+      {
+        id: 8,
+        name: '天然沉香木香炉',
+        price: '268.00',
+        sales: 760,
+        image: '/static/images/censer-1.png'
+      }
+    ],
     4: [
       {
         id: 10,
@@ -161,7 +209,54 @@
         image: '/static/images/book-fengshui.png'
       }
     ],
-    // ... 其他分类数据 ...
+    5: [
+      {
+        id: 12,
+        name: '八卦太极装饰画',
+        price: '238.00',
+        sales: 680,
+        image: '/static/images/painting-1.png'
+      },
+      {
+        id: 13,
+        name: '山水福字书法挂画',
+        price: '188.00',
+        sales: 890,
+        image: '/static/images/calligraphy-1.png'
+      }
+    ],
+    6: [
+      {
+        id: 14,
+        name: '专业罗盘风水指南针',
+        price: '298.00',
+        sales: 1200,
+        image: '/static/images/compass-1.png'
+      },
+      {
+        id: 15,
+        name: '开光八卦镜挂件',
+        price: '108.00',
+        sales: 2100,
+        image: '/static/images/mirror-1.png'
+      }
+    ],
+    7: [
+      {
+        id: 16,
+        name: '祭祖香烛纸钱套装',
+        price: '99.00',
+        sales: 3800,
+        image: '/static/images/worship-1.png'
+      },
+      {
+        id: 17,
+        name: '实木祭祀供奉香炉',
+        price: '199.00',
+        sales: 960,
+        image: '/static/images/burner-1.png'
+      }
+    ]
   })
 
   // 当前分类的商品
