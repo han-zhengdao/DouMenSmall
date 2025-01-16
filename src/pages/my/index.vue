@@ -4,10 +4,10 @@
     <view class="user-info-section">
       <view class="user-info" @click="handleLogin">
         <template v-if="isLogin">
-          <image :src="userInfo.avatar || defaultAvatar" class="avatar" mode="aspectFill" />
+          <image :src="userInfo?.avatar || defaultAvatar" class="avatar" mode="aspectFill" />
           <view class="info">
-            <text class="nickname">{{ userInfo.nickname || '默认昵称' }}</text>
-            <text class="uid">ID: {{ userInfo.uid || '--' }}</text>
+            <text class="nickname">{{ userInfo?.nickname || '默认昵称' }}</text>
+            <text class="uid">ID: {{ userInfo?.id || '--' }}</text>
           </view>
         </template>
         <template v-else>
@@ -23,7 +23,12 @@
     <!-- 功能菜单 -->
     <view class="menu-section">
       <view class="menu-group">
-        <view class="menu-item" v-for="(item, index) in menuList" :key="index" @click="handleMenu(item)">
+        <view 
+          class="menu-item" 
+          v-for="(item, index) in menuList" 
+          :key="index" 
+          @click="handleMenu(item)"
+        >
           <view class="menu-item-left">
             <uni-icons :type="item.icon" size="20" color="#666"></uni-icons>
             <text class="menu-text">{{ item.name }}</text>
@@ -40,9 +45,10 @@
   </view>
 </template>
 
-<script setup>
-import { ref, computed } from 'vue'
+<script setup lang="ts">
+import { ref, computed, onMounted } from 'vue'
 import { useUserStore } from '@/stores/user'
+import { mockUser } from '@/mock/user' // 暂时使用 mock 数据
 
 const userStore = useUserStore()
 const defaultAvatar = '/static/images/default-avatar.png'
@@ -69,7 +75,11 @@ const handleLogin = () => {
 }
 
 // 处理菜单点击
-const handleMenu = (item) => {
+const handleMenu = (item: { path: string }) => {
+  if (!isLogin.value) {
+    return handleLogin()
+  }
+  
   if (item.path) {
     uni.navigateTo({
       url: item.path
@@ -93,6 +103,23 @@ const handleLogout = () => {
     }
   })
 }
+
+// 获取用户信息
+const fetchUserInfo = async () => {
+  try {
+    await userStore.fetchUserInfo()
+  } catch (error) {
+    console.error('获取用户信息失败:', error)
+    // 使用 mock 数据作为后备
+    userStore.setUserInfo(mockUser)
+  }
+}
+
+onMounted(() => {
+  if (isLogin.value) {
+    fetchUserInfo()
+  }
+})
 </script>
 
 <style lang="scss">

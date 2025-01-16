@@ -4,7 +4,20 @@
     <view class="search-bar">
       <view class="search-input-wrapper">
         <uni-icons type="search" size="20" color="#666"></uni-icons>
-        <input type="text" placeholder="搜索商品" class="search-input" />
+        <input 
+          v-model="searchKeyword"
+          type="text" 
+          placeholder="搜索商品" 
+          class="search-input"
+          @confirm="handleSearch"
+        />
+        <uni-icons 
+          v-if="searchKeyword"
+          type="clear" 
+          size="20" 
+          color="#999"
+          @click="clearSearch"
+        ></uni-icons>
       </view>
     </view>
 
@@ -52,11 +65,15 @@
         <template v-if="currentProducts.length > 0">
           <view 
             class="product-item" 
-            v-for="(item, index) in currentProducts" 
-            :key="index"
+            v-for="item in currentProducts" 
+            :key="item.id"
             @click="goToDetail(item)"
           >
-            <image :src="item.image" mode="aspectFill" class="product-image" />
+            <image 
+              :src="item.images[0]" 
+              mode="aspectFill" 
+              class="product-image" 
+            />
             <view class="product-info">
               <text class="product-name">{{ item.name }}</text>
               <view class="product-bottom">
@@ -77,232 +94,120 @@
   </view>
 </template>
 
-<script setup>
-  import { ref, computed } from 'vue'
-  import MescrollBody from '@/uni_modules/mescroll-uni/components/mescroll-body/mescroll-body.vue'
+<script setup lang="ts">
+import { ref, computed, onMounted } from 'vue'
+import { productApi } from '@/api/modules/product'
+import type { Category, Product } from '@/api/types/product'
+import { mockCategories, mockProducts } from '@/mock/mall'
+import MescrollBody from '@/uni_modules/mescroll-uni/components/mescroll-body/mescroll-body.vue'
 
-  // 分类数据
-  const categories = ref([
-    { 
-      id: '0', 
-      name: '精选', 
-      icon: 'star'
-    },
-    { 
-      id: '1', 
-      name: '开运饰品',
-      icon: 'gift'
-    },
-    { 
-      id: '2', 
-      name: '风水摆件',
-      icon: 'medal'
-    },
-    { 
-      id: '3', 
-      name: '香薰用品',
-      icon: 'shop'
-    },
-    { 
-      id: '4', 
-      name: '玄学书籍',
-      icon: 'calendar'
-    },
-    { 
-      id: '5', 
-      name: '开运字画',
-      icon: 'map'
-    },
-    { 
-      id: '6', 
-      name: '风水用品',
-      icon: 'heart'
-    },
-    { 
-      id: '7', 
-      name: '祭祖代烧',
-      icon: 'fire'
-    }
-  ])
+// 状态管理
+const categories = ref<Category[]>([])
+const currentCategory = ref(0)
+const products = ref<Product[]>([])
+const loading = ref(false)
+const searchKeyword = ref('')
 
-  const currentCategory = ref(0)
-
-  // 商品数据
-  const allProducts = ref({
-    0: [
-      {
-        id: 1,
-        name: '天然紫水晶手链',
-        price: '299.00',
-        sales: 1000,
-        image: '/static/images/crystal-1.png'
-      },
-      {
-        id: 2,
-        name: '开光铜葫芦摆件',
-        price: '588.00',
-        sales: 500,
-        image: '/static/images/gourd-1.png'
-      }
-    ],
-    1: [
-      {
-        id: 3,
-        name: '925纯银转运珠手链',
-        price: '168.00',
-        sales: 2300,
-        image: '/static/images/bracelet-1.png'
-      },
-      {
-        id: 4,
-        name: '天然翡翠平安扣项链',
-        price: '1288.00',
-        sales: 460,
-        image: '/static/images/jade-1.png'
-      }
-    ],
-    2: [
-      {
-        id: 5,
-        name: '纯铜五帝钱摆件',
-        price: '198.00',
-        sales: 1800,
-        image: '/static/images/coins-1.png'
-      },
-      {
-        id: 6,
-        name: '开光貔貅招财摆件',
-        price: '366.00',
-        sales: 920,
-        image: '/static/images/pixiu-1.png'
-      }
-    ],
-    3: [
-      {
-        id: 7,
-        name: '檀香木安神香薰',
-        price: '88.00',
-        sales: 3500,
-        image: '/static/images/incense-1.png'
-      },
-      {
-        id: 8,
-        name: '天然沉香木香炉',
-        price: '268.00',
-        sales: 760,
-        image: '/static/images/censer-1.png'
-      }
-    ],
-    4: [
-      {
-        id: 10,
-        name: '周易全书精装版',
-        price: '129.00',
-        sales: 2000,
-        image: '/static/images/book-zhouyi.png'
-      },
-      {
-        id: 11,
-        name: '风水学入门指南',
-        price: '99.00',
-        sales: 1500,
-        image: '/static/images/book-fengshui.png'
-      }
-    ],
-    5: [
-      {
-        id: 12,
-        name: '八卦太极装饰画',
-        price: '238.00',
-        sales: 680,
-        image: '/static/images/painting-1.png'
-      },
-      {
-        id: 13,
-        name: '山水福字书法挂画',
-        price: '188.00',
-        sales: 890,
-        image: '/static/images/calligraphy-1.png'
-      }
-    ],
-    6: [
-      {
-        id: 14,
-        name: '专业罗盘风水指南针',
-        price: '298.00',
-        sales: 1200,
-        image: '/static/images/compass-1.png'
-      },
-      {
-        id: 15,
-        name: '开光八卦镜挂件',
-        price: '108.00',
-        sales: 2100,
-        image: '/static/images/mirror-1.png'
-      }
-    ],
-    7: [
-      {
-        id: 16,
-        name: '祭祖香烛纸钱套装',
-        price: '99.00',
-        sales: 3800,
-        image: '/static/images/worship-1.png'
-      },
-      {
-        id: 17,
-        name: '实木祭祀供奉香炉',
-        price: '199.00',
-        sales: 960,
-        image: '/static/images/burner-1.png'
-      }
-    ]
-  })
-
-  // 当前分类的商品
-  const currentProducts = computed(() => {
-    return allProducts.value[currentCategory.value] || []
-  })
-
-  // 切换分类
-  const selectCategory = (index) => {
-    currentCategory.value = index
-    currentProducts.value = allProducts.value[index] || []
-    mescrollRef.value.resetUpScroll(false)
+// 计算属性：当前显示的商品列表
+const currentProducts = computed(() => {
+  if (!searchKeyword.value) {
+    return products.value
   }
+  // 搜索过滤
+  return products.value.filter(product => 
+    product.name.toLowerCase().includes(searchKeyword.value.toLowerCase()) ||
+    product.description.toLowerCase().includes(searchKeyword.value.toLowerCase())
+  )
+})
 
-  // 跳转到商品详情
-  const goToDetail = (item) => {
-    uni.navigateTo({
-      url: `/pages/mall/detail?id=${item.id}`
+// 获取分类列表
+const fetchCategories = async () => {
+  try {
+    const result = await productApi.getCategories()
+    categories.value = result
+  } catch (error) {
+    console.error('获取分类失败:', error)
+    categories.value = mockCategories
+  }
+}
+
+// 获取商品列表
+const fetchProducts = async (categoryId: number) => {
+  loading.value = true
+  try {
+    const result = await productApi.getProducts({ categoryId: String(categoryId) })
+    products.value = result.items
+  } catch (error) {
+    console.error('获取商品列表失败:', error)
+    products.value = mockProducts[categoryId] || []
+  } finally {
+    loading.value = false
+  }
+}
+
+// 搜索商品
+const handleSearch = async () => {
+  if (!searchKeyword.value.trim()) {
+    return fetchProducts(currentCategory.value)
+  }
+  
+  loading.value = true
+  try {
+    const result = await productApi.searchProducts(searchKeyword.value)
+    products.value = result.items
+  } catch (error) {
+    console.error('搜索商品失败:', error)
+    uni.showToast({
+      title: '搜索失败',
+      icon: 'none'
     })
+  } finally {
+    loading.value = false
   }
+}
 
-  // 下拉刷新
-  const downCallback = async () => {
-    mescrollRef.value.endSuccess()
-  }
+// 清除搜索
+const clearSearch = () => {
+  searchKeyword.value = ''
+  fetchProducts(currentCategory.value)
+}
 
-  // 上拉加载
-  const upCallback = async (page) => {
-    try {
-      // 如果是第一页
-      if (page.num === 1) {
-        // 获取当前分类的商品
-        const products = allProducts.value[currentCategory.value] || []
-        currentProducts.value = products
-        mescrollRef.value.endSuccess(products.length)
-      }
-    } catch (error) {
-      console.error(error)
-      mescrollRef.value.endErr()
-    }
-  }
+// 选择分类
+const selectCategory = (index: number) => {
+  currentCategory.value = index
+  searchKeyword.value = '' // 切换分类时清除搜索关键词
+  fetchProducts(index)
+}
 
-  const mescrollRef = ref(null)
-  const mescrollInit = (mescroll) => {
-    mescrollRef.value = mescroll
-  }
+// mescroll 相关
+const mescrollRef = ref(null)
+
+const mescrollInit = (mescroll) => {
+  mescrollRef.value = mescroll
+}
+
+const downCallback = async () => {
+  await fetchProducts(currentCategory.value)
+  mescrollRef.value.endSuccess()
+}
+
+const upCallback = async (page) => {
+  // 这里可以实现加载更多的逻辑
+  mescrollRef.value.endSuccess(products.value.length)
+}
+
+// 跳转到商品详情
+const goToDetail = (item: Product) => {
+  uni.navigateTo({
+    url: `/pages/mall/detail?id=${item.id}`
+  })
+}
+
+// 初始化
+onMounted(() => {
+  fetchCategories()
+  fetchProducts(0)
+})
 </script>
 
 <style lang="scss">
@@ -328,6 +233,10 @@
 
       .uni-icons {
         margin-right: 16rpx;
+
+        &:last-child {
+          margin-left: 16rpx;
+        }
       }
 
       .search-input {

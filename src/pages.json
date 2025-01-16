@@ -11,63 +11,12 @@
     {
       "path": "pages/index/index",
       "style": {
-        "navigationStyle": "custom",
-        "navigationBarTitleText": "",
-        "app-plus": {
-          "titleNView": false
-        },
-        "h5": {
-          "titleNView": false
-        },
-        "tabBar": {
-          "visible": false
-        }
-      }
-    },
-    {
-      "path": "pages/my/index",
-      "style": {
-        "navigationBarTitleText": "我的"
-      }
-    },
-    {
-      "path": "pages/my/setting",
-      "style": {
-        "navigationBarTitleText": "设置",
-        "navigationStyle": "custom"
-      }
-    },
-    {
-      "path": "pages/my/about",
-      "style": {
-        "navigationBarTitleText": "关于",
-        "navigationStyle": "custom"
-      }
-    },
-    {
-      "path": "pages/my/order",
-      "style": {
-        "navigationBarTitleText": "我的订单",
-        "navigationStyle": "custom"
-      }
-    },
-    {
-      "path": "pages/my/address",
-      "style": {
-        "navigationBarTitleText": "收货地址",
         "navigationStyle": "custom"
       }
     },
     {
       "path": "pages/mall/index",
       "style": {
-        "navigationBarTitleText": "商城"
-      }
-    },
-    {
-      "path": "pages/login/index",
-      "style": {
-        "navigationBarTitleText": "登录",
         "navigationStyle": "custom"
       }
     },
@@ -76,47 +25,93 @@
       "style": {
         "navigationStyle": "custom"
       }
+    },
+    {
+      "path": "pages/cart/index",
+      "style": {
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/my/index",
+      "style": {
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/login/index",
+      "style": {
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/my/address",
+      "style": {
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/my/order",
+      "style": {
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/my/setting",
+      "style": {
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/my/about",
+      "style": {
+        "navigationStyle": "custom"
+      }
+    },
+    {
+      "path": "pages/my/address-edit",
+      "style": {
+        "navigationStyle": "custom"
+      }
     }
   ],
   "tabBar": {
-    "condition": {
-      "current": 0,
-      "list": [
-        {
-          "pagePath": "pages/my/index",
-          "visible": true
-        }
-      ]
-    },
-    "color": "#bfbfbf",
+    "color": "#999999",
     "selectedColor": "#1296db",
-    "borderStyle": "black",
     "backgroundColor": "#ffffff",
+    "borderStyle": "white",
     "list": [
       {
         "pagePath": "pages/index/index",
-        "iconPath": "static/images/map_i_no.svg",
-        "selectedIconPath": "static/images/map_i_yes.svg",
-        "text": "电子罗盘"
+        "text": "首页",
+        "iconPath": "static/tabbar/home.png",
+        "selectedIconPath": "static/tabbar/home-active.png"
       },
       {
         "pagePath": "pages/mall/index",
-        "iconPath": "static/images/mall_i_no.svg",
-        "selectedIconPath": "static/images/mall_i_yes.svg",
-        "text": "好运商城"
+        "text": "商城",
+        "iconPath": "static/tabbar/mall.png",
+        "selectedIconPath": "static/tabbar/mall-active.png"
+      },
+      {
+        "pagePath": "pages/cart/index",
+        "text": "购物车",
+        "iconPath": "static/tabbar/cart.png",
+        "selectedIconPath": "static/tabbar/cart-active.png"
       },
       {
         "pagePath": "pages/my/index",
-        "iconPath": "static/images/my_i_no.svg",
-        "selectedIconPath": "static/images/my_i_yes.svg",
-        "text": "个人中心"
+        "text": "我的",
+        "iconPath": "static/tabbar/my.png",
+        "selectedIconPath": "static/tabbar/my-active.png"
       }
     ]
   },
   "globalStyle": {
-    "navigationStyle": "custom",
-    "navigationBarTextStyle": "white",
-    "backgroundColor": "#000000"
+    "navigationBarTextStyle": "black",
+    "navigationBarTitleText": "电子罗盘",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "backgroundColor": "#F8F8F8"
   },
   "subPackages": []
 }

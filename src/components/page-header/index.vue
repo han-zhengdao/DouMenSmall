@@ -10,13 +10,10 @@
   </view>
 </template>
 
-<script setup>
-defineProps({
-  title: {
-    type: String,
-    default: ''
-  }
-})
+<script setup lang="ts">
+defineProps<{
+  title: string
+}>()
 
 const handleBack = () => {
   uni.navigateBack()

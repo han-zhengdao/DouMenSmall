@@ -35,9 +35,10 @@
   </view>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue'
 import { useUserStore } from '@/stores/user'
+import { mockUser } from '@/mock/user'
 
 const userStore = useUserStore()
 const isAgree = ref(false)
@@ -59,11 +60,7 @@ const handleLogin = () => {
 
   // 模拟登录成功
   userStore.setToken('test-token')
-  userStore.setUserInfo({
-    nickname: '测试用户',
-    avatar: '/static/images/default-avatar.png',
-    uid: '10086'
-  })
+  userStore.setUserInfo(mockUser)
 
   uni.showToast({
     title: '登录成功',
@@ -76,7 +73,7 @@ const handleLogin = () => {
 }
 
 // 查看协议
-const handleAgreement = (type) => {
+const handleAgreement = (type: 'user' | 'privacy') => {
   uni.navigateTo({
     url: `/pages/agreement/index?type=${type}`
   })

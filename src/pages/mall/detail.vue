@@ -4,29 +4,44 @@
     <page-header title="商品详情"></page-header>
 
     <view class="content" :style="{ paddingTop: `calc(88rpx + ${statusBarHeight}px)` }">
-      <!-- 商品图片 -->
-      <swiper class="product-swiper" :indicator-dots="true" :autoplay="true" interval="3000" duration="500">
-        <swiper-item>
-          <image :src="product.image" mode="aspectFill" class="product-image" />
-        </swiper-item>
-      </swiper>
-
-      <!-- 商品信息 -->
-      <view class="product-info">
-        <view class="price-section">
-          <text class="price">¥{{ product.price }}</text>
-          <text class="sales">已售 {{ product.sales }}</text>
-        </view>
-        <text class="name">{{ product.name }}</text>
+      <!-- 加载状态 -->
+      <view v-if="loading" class="loading-state">
+        <uni-icons type="spinner-cycle" size="24" color="#666"></uni-icons>
+        <text>加载中...</text>
       </view>
-
+      
       <!-- 商品详情 -->
-      <view class="detail-section">
-        <view class="section-title">
-          <text>商品详情</text>
+      <template v-else-if="product">
+        <!-- 商品图片轮播 -->
+        <swiper class="product-swiper" :indicator-dots="true" :autoplay="true">
+          <swiper-item v-for="(img, index) in product.images" :key="index">
+            <image :src="img" mode="aspectFill" class="product-image" />
+          </swiper-item>
+        </swiper>
+
+        <!-- 商品信息 -->
+        <view class="product-info">
+          <view class="price-section">
+            <text class="price">¥{{ product.price }}</text>
+            <text class="sales">已售 {{ product.sales }}</text>
+          </view>
+          <text class="name">{{ product.name }}</text>
+          <text class="description">{{ product.description }}</text>
         </view>
-        <view class="detail-content">
-          <text class="description">{{ product.description || '暂无详细描述' }}</text>
+
+        <!-- 数量选择 -->
+        <view class="quantity-section">
+          <text class="label">购买数量</text>
+          <view class="quantity-control">
+            <button class="btn minus" @click="changeQuantity(-1)">-</button>
+            <text class="quantity">{{ quantity }}</text>
+            <button class="btn plus" @click="changeQuantity(1)">+</button>
+          </view>
+        </view>
+
+        <!-- 商品详情 -->
+        <view class="detail-section">
+          <view class="section-title">商品详情</view>
           <image 
             v-for="(img, index) in product.detailImages" 
             :key="index"
@@ -35,7 +50,7 @@
             class="detail-image"
           />
         </view>
-      </view>
+      </template>
     </view>
 
     <!-- 底部操作栏 -->
@@ -58,31 +73,82 @@
   </view>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted } from 'vue'
+import { productApi } from '@/api/modules/product'
+import { useCartStore } from '@/stores/cart'
+import type { ProductDetail } from '@/api/types/product'
+import { mockProductDetail } from '@/mock/mall'
 import PageHeader from '@/components/page-header/index.vue'
 
 const statusBarHeight = uni.getSystemInfoSync().statusBarHeight
+const cartStore = useCartStore()
 
-// 商品数据
-const product = ref({})
+const product = ref<ProductDetail | null>(null)
+const loading = ref(false)
+const quantity = ref(1) // 添加数量选择
 
 // 获取商品详情
-const getProductDetail = (id) => {
-  // 模拟获取商品详情
-  // 实际开发时应该调用接口获取数据
-  product.value = {
-    id,
-    name: '天然紫水晶手链',
-    price: '299.00',
-    sales: 1000,
-    image: '/static/images/crystal-1.png',
-    description: '采用天然紫水晶制作，具有开运招财、化解小人、提升桃花运等功效。',
-    detailImages: [
-      '/static/images/crystal-detail-1.png',
-      '/static/images/crystal-detail-2.png'
-    ]
+const fetchProductDetail = async (id: string) => {
+  loading.value = true
+  try {
+    const result = await productApi.getProductDetail(id)
+    product.value = result
+  } catch (error) {
+    console.error('获取商品详情失败:', error)
+    product.value = mockProductDetail as ProductDetail
+  } finally {
+    loading.value = false
   }
+}
+
+// 加入购物车
+const handleAddCart = async () => {
+  if (!product.value) return
+  
+  uni.showLoading({ title: '加入中...' })
+  try {
+    await cartStore.addToCart({
+      productId: product.value.id,
+      quantity: quantity.value
+    })
+  } finally {
+    uni.hideLoading()
+  }
+}
+
+// 立即购买
+const handleBuyNow = () => {
+  if (!product.value) return
+  
+  // 先加入购物车，然后跳转到结算页
+  handleAddCart().then(() => {
+    uni.navigateTo({
+      url: '/pages/order/confirm'
+    })
+  })
+}
+
+// 修改购买数量
+const changeQuantity = (value: number) => {
+  if (!product.value) return
+  
+  const newQuantity = quantity.value + value
+  if (newQuantity < 1) {
+    uni.showToast({
+      title: '数量不能小于1',
+      icon: 'none'
+    })
+    return
+  }
+  if (newQuantity > product.value.stock) {
+    uni.showToast({
+      title: '库存不足',
+      icon: 'none'
+    })
+    return
+  }
+  quantity.value = newQuantity
 }
 
 // 客服
@@ -95,31 +161,18 @@ const handleService = () => {
 
 // 购物车
 const handleCart = () => {
-  uni.switchTab({
+  uni.reLaunch({
     url: '/pages/cart/index'
-  })
-}
-
-// 加入购物车
-const handleAddCart = () => {
-  uni.showToast({
-    title: '已加入购物车',
-    icon: 'success'
-  })
-}
-
-// 立即购买
-const handleBuyNow = () => {
-  uni.navigateTo({
-    url: `/pages/order/confirm?id=${product.value.id}`
   })
 }
 
 onMounted(() => {
   const pages = getCurrentPages()
   const currentPage = pages[pages.length - 1]
-  const { id } = currentPage.$page.options
-  getProductDetail(id)
+  const { id } = currentPage.$page?.options || {}
+  if (id) {
+    fetchProductDetail(id)
+  }
 })
 </script>
 
